@@ -57,6 +57,14 @@ def write_artifact(dest: str, line: str) -> None:
 
 
 def main() -> int:
+    if "--check" in sys.argv[1:]:
+        errors = gate_errors(ENTRY)
+        for err in errors:
+            print("GATE FAIL: " + err)
+        print("check: {} chars, {} bytes, gate {}".format(
+            len(ENTRY), len(ENTRY.encode("utf-8")), "would pass" if not errors else "would fail"))
+        return 1 if errors else 0
+
     errors = gate_errors(ENTRY)
     if errors:
         for err in errors:
